@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>UK Rain Forecast (Coveo Atomic)</title>
+
+    <!-- Coveo Atomic UI (v3) from CDN -->
+    <script type="module" src="https://static.cloud.coveo.com/atomic/v3/atomic.esm.js"></script>
+    <link rel="stylesheet" href="https://static.cloud.coveo.com/atomic/v3/themes/coveo.css" />
+
+    <link rel="stylesheet" href="styles.css" />
+    <script type="module" src="weather-widget.js"></script>
+    <script type="module" src="location-search.js"></script>
+  </head>
+  <body>
+    <header class="app-header">
+      <h1>☔ UK Rain Forecast</h1>
+      <p>Search any UK town or city — weather data from Open-Meteo, rendered inside a Coveo Atomic search interface</p>
+    </header>
+
+    <atomic-search-interface id="search" language="en">
+      <atomic-search-layout>
+        <atomic-layout-section section="search">
+          <atomic-search-box placeholder="Search (Coveo sample index)…"></atomic-search-box>
+        </atomic-layout-section>
+
+        <atomic-layout-section section="main">
+          <atomic-layout-section section="horizontal-results">
+            <!-- Custom location search + weather widget hosted inside the Atomic layout -->
+            <uk-location-search for="uk-rain-widget"></uk-location-search>
+            <uk-rain-widget
+              latitude="51.1124"
+              longitude="-0.1831"
+              place="Crawley, West Sussex, England, UK"
+            ></uk-rain-widget>
+          </atomic-layout-section>
+
+          <atomic-layout-section section="status">
+            <atomic-breadbox></atomic-breadbox>
+            <atomic-query-summary></atomic-query-summary>
+          </atomic-layout-section>
+
+          <atomic-layout-section section="results">
+            <atomic-result-list></atomic-result-list>
+            <atomic-query-error></atomic-query-error>
+            <atomic-no-results></atomic-no-results>
+          </atomic-layout-section>
+
+          <atomic-layout-section section="pagination">
+            <atomic-load-more-results></atomic-load-more-results>
+          </atomic-layout-section>
+        </atomic-layout-section>
+      </atomic-search-layout>
+    </atomic-search-interface>
+
+    <script type="module">
+      // Initialize the Atomic search interface against Coveo's public sample org
+      // (used in Coveo's own docs/demos). Swap in your org id + token for real use.
+      await customElements.whenDefined('atomic-search-interface');
+      const searchInterface = document.querySelector('#search');
+      await searchInterface.initialize({
+        organizationId: 'searchuisamples',
+        accessToken: 'xx564559b1-0045-48e1-953c-3addd1ee4457',
+      });
+      searchInterface.executeFirstSearch();
+    </script>
+  </body>
+</html>
